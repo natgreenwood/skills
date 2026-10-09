@@ -1,0 +1,29 @@
+# Fails the build when a commit introduces a secret. This repo is public:
+# anything pushed here, even briefly, must be treated as leaked.
+name: gitleaks
+
+on:
+  push:
+  pull_request:
+  # Manual runs scan the full history, not just the new commits.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  # Lets gitleaks annotate the offending line on pull requests.
+  pull-requests: write
+
+jobs:
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Keep in step with the rev in .pre-commit-config.yaml so local and
+          # CI scans apply the same rules.
+          GITLEAKS_VERSION: 8.30.1

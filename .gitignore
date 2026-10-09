@@ -1,0 +1,25 @@
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local secrets and credentials. A first line of defence only: gitleaks
+# still scans every commit.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+
+# gitleaks reports
+gitleaks-report.*
+results.sarif
+
+# Packaged skills for upload
+*.zip
